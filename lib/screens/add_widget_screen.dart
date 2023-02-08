@@ -4,7 +4,8 @@ import 'package:ubixstar/constants/widgets.dart';
 import 'package:ubixstar/widgets/addable_widget.dart';
 
 class AddWidgetScreen extends StatefulWidget {
-  const AddWidgetScreen({super.key});
+  final List<AddableWidgets> preAddedWidgets;
+  const AddWidgetScreen({super.key,required this.preAddedWidgets});
 
   @override
   State<AddWidgetScreen> createState() => _AddWidgetScreenState();
@@ -12,6 +13,13 @@ class AddWidgetScreen extends StatefulWidget {
 
 class _AddWidgetScreenState extends State<AddWidgetScreen> {
   List<AddableWidgets> addableWidgets = [];
+  List<AddableWidgets> listToReturn = [];
+
+  @override
+  void initState() {
+    addableWidgets.addAll(widget.preAddedWidgets);
+    super.initState();
+  }
 
   void toggleElement(AddableWidgets w) {
     if (addableWidgets.contains(w)) {
@@ -20,6 +28,18 @@ class _AddWidgetScreenState extends State<AddWidgetScreen> {
       addableWidgets.add(w);
     }
     setState(() {});
+  }
+
+  void sortWidgets(){
+    if(addableWidgets.contains(AddableWidgets.Text)){
+      listToReturn.add(AddableWidgets.Text);
+    }
+    if(addableWidgets.contains(AddableWidgets.Image)){
+      listToReturn.add(AddableWidgets.Image);
+    }
+    if(addableWidgets.contains(AddableWidgets.Button)){
+      listToReturn.add(AddableWidgets.Button);
+    }
   }
 
   @override
@@ -67,7 +87,8 @@ class _AddWidgetScreenState extends State<AddWidgetScreen> {
           Center(
             child: ElevatedButton(
               onPressed: () {
-                Navigator.of(context).pop(addableWidgets);
+                sortWidgets();
+                Navigator.of(context).pop(listToReturn);
               },
               style: ElevatedButton.styleFrom(
                 primary: ConstantColors.cardColor,
